@@ -22,6 +22,13 @@ final class MockEventService: EventServiceProtocol, @unchecked Sendable {
         events.append(event)
     }
 
+    func updateEvent(_ event: Event) async throws {
+        if let error = errorToThrow { throw error }
+        if let index = events.firstIndex(where: { $0.id == event.id }) {
+            events[index] = event
+        }
+    }
+
     func deleteEvent(_ eventId: String) async throws {
         if let error = errorToThrow { throw error }
         events.removeAll { $0.id == eventId }

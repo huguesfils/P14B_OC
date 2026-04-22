@@ -14,6 +14,7 @@ enum EventoriasError: LocalizedError {
     case accountDeletionFailed(String)
     case eventCreationFailed(String)
     case eventFetchFailed(String)
+    case eventUpdateFailed(String)
     case eventDeletionFailed(String)
     case unknown(String)
 
@@ -25,6 +26,7 @@ enum EventoriasError: LocalizedError {
         case .accountDeletionFailed(let message): message
         case .eventCreationFailed(let message): message
         case .eventFetchFailed(let message): message
+        case .eventUpdateFailed(let message): message
         case .eventDeletionFailed(let message): message
         case .unknown(let message): message
         }

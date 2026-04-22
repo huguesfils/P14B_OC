@@ -7,13 +7,13 @@
 
 import Foundation
 
-struct Event: Identifiable, Codable, Sendable {
+struct Event: Identifiable, Codable, Sendable, Hashable {
     var id: String
     var title: String
     var description: String
     var date: Date
     var location: String
-    var category: String
+    var category: EventCategory
     var creatorId: String
     var guests: [String]
 }
