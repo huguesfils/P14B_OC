@@ -16,7 +16,7 @@ final class AuthenticationViewModel {
 
     private let authService: AuthServiceProtocol
 
-    init(authService: AuthServiceProtocol = AuthService()) {
+    init(authService: AuthServiceProtocol) {
         self.authService = authService
     }
 

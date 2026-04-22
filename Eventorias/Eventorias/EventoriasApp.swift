@@ -10,13 +10,16 @@ import FirebaseCore
 
 @main
 struct EventoriasApp: App {
+    let container: DIContainer
+
     init() {
         FirebaseApp.configure()
+        container = DIContainer()
     }
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(container: container)
         }
     }
 }

@@ -16,7 +16,7 @@ struct ForgotPasswordView: View {
 
     private let authService: AuthServiceProtocol
 
-    init(authService: AuthServiceProtocol = AuthService()) {
+    init(authService: AuthServiceProtocol) {
         self.authService = authService
     }
 
@@ -95,5 +95,5 @@ struct ForgotPasswordView: View {
 }
 
 #Preview {
-    ForgotPasswordView()
+    ForgotPasswordView(authService: AuthService())
 }

@@ -12,9 +12,9 @@ struct RegistrationView: View {
     @Binding var isAuthenticated: Bool
     @Environment(\.dismiss) private var dismiss
 
-    init(isAuthenticated: Binding<Bool>) {
+    init(container: DIContainer, isAuthenticated: Binding<Bool>) {
         self._isAuthenticated = isAuthenticated
-        self._viewModel = State(initialValue: RegistrationViewModel())
+        self._viewModel = State(initialValue: RegistrationViewModel(authService: container.authService))
     }
 
     var body: some View {
@@ -83,5 +83,5 @@ struct RegistrationView: View {
 }
 
 #Preview {
-    RegistrationView(isAuthenticated: .constant(false))
+    RegistrationView(container: DIContainer(), isAuthenticated: .constant(false))
 }

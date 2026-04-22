@@ -13,9 +13,12 @@ struct AuthenticationView: View {
     @State private var showRegistration = false
     @State private var showForgotPassword = false
 
-    init(isAuthenticated: Binding<Bool>) {
+    private let container: DIContainer
+
+    init(container: DIContainer, isAuthenticated: Binding<Bool>) {
+        self.container = container
         self._isAuthenticated = isAuthenticated
-        self._viewModel = State(initialValue: AuthenticationViewModel())
+        self._viewModel = State(initialValue: AuthenticationViewModel(authService: container.authService))
     }
 
     var body: some View {
@@ -76,15 +79,15 @@ struct AuthenticationView: View {
             }
             .padding()
             .sheet(isPresented: $showRegistration) {
-                RegistrationView(isAuthenticated: $isAuthenticated)
+                RegistrationView(container: container, isAuthenticated: $isAuthenticated)
             }
             .sheet(isPresented: $showForgotPassword) {
-                ForgotPasswordView()
+                ForgotPasswordView(authService: container.authService)
             }
         }
     }
 }
 
 #Preview {
-    AuthenticationView(isAuthenticated: .constant(false))
+    AuthenticationView(container: DIContainer(), isAuthenticated: .constant(false))
 }

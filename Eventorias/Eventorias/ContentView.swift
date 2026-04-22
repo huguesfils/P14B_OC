@@ -6,25 +6,49 @@
 //
 
 import SwiftUI
-import FirebaseAuth
 
 struct ContentView: View {
     @State private var isAuthenticated = false
 
+    private let container: DIContainer
+
+    init(container: DIContainer) {
+        self.container = container
+    }
+
     var body: some View {
         Group {
             if isAuthenticated {
-                Text("Welcome to Eventorias!")
+                VStack(spacing: 24) {
+                    Spacer()
+                    Text("Welcome to Eventorias!")
+                        .font(.title)
+                    Spacer()
+                    Button("Sign Out", role: .destructive) {
+                        signOut()
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .padding(.bottom, 40)
+                }
             } else {
-                AuthenticationView(isAuthenticated: $isAuthenticated)
+                AuthenticationView(container: container, isAuthenticated: $isAuthenticated)
             }
         }
         .onAppear {
-            isAuthenticated = Auth.auth().currentUser != nil
+            isAuthenticated = container.authService.currentUserId != nil
+        }
+    }
+
+    private func signOut() {
+        do {
+            try container.authService.signOut()
+            isAuthenticated = false
+        } catch {
+            // Sign out errors are non-recoverable locally
         }
     }
 }
 
 #Preview {
-    ContentView()
+    ContentView(container: DIContainer())
 }

@@ -7,7 +7,6 @@
 
 import Foundation
 
-@MainActor
 @Observable
 final class RegistrationViewModel {
     var email = ""
@@ -18,7 +17,7 @@ final class RegistrationViewModel {
 
     private let authService: AuthServiceProtocol
 
-    init(authService: AuthServiceProtocol = AuthService()) {
+    init(authService: AuthServiceProtocol) {
         self.authService = authService
     }
 
