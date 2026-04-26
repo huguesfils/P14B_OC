@@ -141,17 +141,26 @@ struct EventDetailView: View {
                 }
                 .disabled(viewModel.isLoading)
             }
-        } else if viewModel.canEdit {
+        } else {
             ToolbarItem(placement: .primaryAction) {
-                Menu {
-                    Button("Edit", systemImage: "pencil") {
-                        viewModel.startEditing()
+                ShareLink(
+                    item: EventShareTextBuilder.text(for: viewModel.event),
+                    subject: Text(viewModel.event.title),
+                    message: Text("Join me at this event")
+                )
+            }
+            if viewModel.canEdit {
+                ToolbarItem(placement: .primaryAction) {
+                    Menu {
+                        Button("Edit", systemImage: "pencil") {
+                            viewModel.startEditing()
+                        }
+                        Button("Delete", systemImage: "trash", role: .destructive) {
+                            showDeleteConfirmation = true
+                        }
+                    } label: {
+                        Image(systemName: "ellipsis.circle")
                     }
-                    Button("Delete", systemImage: "trash", role: .destructive) {
-                        showDeleteConfirmation = true
-                    }
-                } label: {
-                    Image(systemName: "ellipsis.circle")
                 }
             }
         }
