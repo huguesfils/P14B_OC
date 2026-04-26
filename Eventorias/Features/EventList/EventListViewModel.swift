@@ -12,11 +12,21 @@ final class EventListViewModel {
     var events: [Event] = []
     var errorMessage: String?
     var isLoading = false
+    var selectedCategory: EventCategory?
 
     private let eventService: EventServiceProtocol
 
     init(eventService: EventServiceProtocol) {
         self.eventService = eventService
+    }
+
+    var filteredEvents: [Event] {
+        guard let selectedCategory else { return events }
+        return events.filter { $0.category == selectedCategory }
+    }
+
+    var hasActiveFilter: Bool {
+        selectedCategory != nil
     }
 
     func loadEvents() async {
@@ -31,5 +41,9 @@ final class EventListViewModel {
             errorMessage = error.localizedDescription
             isLoading = false
         }
+    }
+
+    func clearFilter() {
+        selectedCategory = nil
     }
 }

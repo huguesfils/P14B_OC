@@ -19,7 +19,14 @@ struct ContentView: View {
     var body: some View {
         Group {
             if isAuthenticated {
-                EventListView(container: container, onSignOut: signOut)
+                TabView {
+                    Tab("Events", systemImage: "list.bullet") {
+                        EventListView(container: container, onSignOut: signOut)
+                    }
+                    Tab("Calendar", systemImage: "calendar") {
+                        EventCalendarView(container: container)
+                    }
+                }
             } else {
                 AuthenticationView(container: container, isAuthenticated: $isAuthenticated)
             }
