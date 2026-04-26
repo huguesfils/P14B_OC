@@ -17,7 +17,8 @@ struct EventDetailView: View {
             initialValue: EventDetailViewModel(
                 event: event,
                 eventService: container.eventService,
-                authService: container.authService
+                authService: container.authService,
+                notificationService: container.notificationService
             )
         )
     }

@@ -21,10 +21,16 @@ final class EventCreationViewModel {
 
     private let eventService: EventServiceProtocol
     private let authService: AuthServiceProtocol
+    private let notificationService: NotificationServiceProtocol
 
-    init(eventService: EventServiceProtocol, authService: AuthServiceProtocol) {
+    init(
+        eventService: EventServiceProtocol,
+        authService: AuthServiceProtocol,
+        notificationService: NotificationServiceProtocol
+    ) {
         self.eventService = eventService
         self.authService = authService
+        self.notificationService = notificationService
     }
 
     func createEvent() async -> Bool {
@@ -51,6 +57,7 @@ final class EventCreationViewModel {
 
         do {
             try await eventService.createEvent(event)
+            try? await notificationService.scheduleReminder(for: event)
             isLoading = false
             return true
         } catch {

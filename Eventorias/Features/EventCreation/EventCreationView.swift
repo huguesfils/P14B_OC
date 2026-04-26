@@ -15,7 +15,8 @@ struct EventCreationView: View {
         self._viewModel = State(
             initialValue: EventCreationViewModel(
                 eventService: container.eventService,
-                authService: container.authService
+                authService: container.authService,
+                notificationService: container.notificationService
             )
         )
     }

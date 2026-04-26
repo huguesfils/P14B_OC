@@ -17,6 +17,7 @@ struct EventDetailViewModelTests {
 
     let mockEventService: MockEventService
     let mockAuthService: MockAuthService
+    let mockNotificationService: MockNotificationService
     let originalEvent: Event
     let viewModel: EventDetailViewModel
 
@@ -25,6 +26,7 @@ struct EventDetailViewModelTests {
     init() {
         let eventService = MockEventService()
         let authService = MockAuthService()
+        let notificationService = MockNotificationService()
         let event = Event(
             id: "event-1",
             title: "Swift Meetup",
@@ -38,11 +40,13 @@ struct EventDetailViewModelTests {
         eventService.events = [event]
         mockEventService = eventService
         mockAuthService = authService
+        mockNotificationService = notificationService
         originalEvent = event
         viewModel = EventDetailViewModel(
             event: event,
             eventService: eventService,
-            authService: authService
+            authService: authService,
+            notificationService: notificationService
         )
     }
 
@@ -232,6 +236,47 @@ struct EventDetailViewModelTests {
         #expect(viewModel.errorMessage == "Forbidden")
         #expect(viewModel.isLoading == false)
         #expect(mockEventService.events.count == 1) // still there
+    }
+
+    // MARK: - Notifications
+
+    @Test("saveChanges cancels old reminder and schedules a new one")
+    func saveChangesCancelsAndReschedulesReminder() async {
+        viewModel.startEditing()
+        viewModel.title = "Updated"
+
+        _ = await viewModel.saveChanges()
+
+        #expect(mockNotificationService.canceledEventIds.contains("event-1"))
+        #expect(mockNotificationService.scheduledEventIds.contains("event-1"))
+    }
+
+    @Test("saveChanges does not touch reminders when service fails")
+    func saveChangesFailureLeavesRemindersUntouched() async {
+        viewModel.startEditing()
+        viewModel.title = "Updated"
+        mockEventService.errorToThrow = EventoriasError.eventUpdateFailed("nope")
+
+        _ = await viewModel.saveChanges()
+
+        #expect(mockNotificationService.canceledEventIds.isEmpty)
+        #expect(mockNotificationService.scheduledEventIds.isEmpty)
+    }
+
+    @Test("deleteEvent cancels the reminder")
+    func deleteEventCancelsReminder() async {
+        _ = await viewModel.deleteEvent()
+
+        #expect(mockNotificationService.canceledEventIds == ["event-1"])
+    }
+
+    @Test("deleteEvent does not cancel reminder when service fails")
+    func deleteEventFailureDoesNotCancelReminder() async {
+        mockEventService.errorToThrow = EventoriasError.eventDeletionFailed("nope")
+
+        _ = await viewModel.deleteEvent()
+
+        #expect(mockNotificationService.canceledEventIds.isEmpty)
     }
 
     // MARK: - Guests

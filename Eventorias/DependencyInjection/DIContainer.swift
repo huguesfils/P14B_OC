@@ -10,9 +10,11 @@ import Foundation
 struct DIContainer {
     let authService: AuthServiceProtocol
     let eventService: EventServiceProtocol
+    let notificationService: NotificationServiceProtocol
 
     init() {
         self.authService = AuthService()
         self.eventService = EventService()
+        self.notificationService = LocalNotificationService()
     }
 }
