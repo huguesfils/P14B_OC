@@ -21,10 +21,13 @@ struct ContentView: View {
             if isAuthenticated {
                 TabView {
                     Tab("Events", systemImage: "list.bullet") {
-                        EventListView(container: container, onSignOut: signOut)
+                        EventListView(container: container)
                     }
                     Tab("Calendar", systemImage: "calendar") {
                         EventCalendarView(container: container)
+                    }
+                    Tab("Profile", systemImage: "person.crop.circle") {
+                        ProfileView(container: container, onSessionEnded: endSession)
                     }
                 }
             } else {
@@ -36,13 +39,8 @@ struct ContentView: View {
         }
     }
 
-    private func signOut() {
-        do {
-            try container.authService.signOut()
-            isAuthenticated = false
-        } catch {
-            // Sign out errors are non-recoverable locally
-        }
+    private func endSession() {
+        isAuthenticated = false
     }
 }
 

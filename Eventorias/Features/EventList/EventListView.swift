@@ -12,11 +12,9 @@ struct EventListView: View {
     @State private var showCreateEvent = false
 
     private let container: DIContainer
-    private let onSignOut: () -> Void
 
-    init(container: DIContainer, onSignOut: @escaping () -> Void) {
+    init(container: DIContainer) {
         self.container = container
-        self.onSignOut = onSignOut
         self._viewModel = State(
             initialValue: EventListViewModel(eventService: container.eventService)
         )
@@ -27,9 +25,6 @@ struct EventListView: View {
             content
                 .navigationTitle("Events")
                 .toolbar {
-                    ToolbarItem(placement: .topBarLeading) {
-                        Button("Sign Out", role: .destructive, action: onSignOut)
-                    }
                     ToolbarItem(placement: .primaryAction) {
                         categoryFilterMenu
                     }
@@ -142,5 +137,5 @@ private struct EventRow: View {
 }
 
 #Preview {
-    EventListView(container: DIContainer(), onSignOut: {})
+    EventListView(container: DIContainer())
 }
