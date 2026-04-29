@@ -31,6 +31,14 @@ final class EventService: EventServiceProtocol, @unchecked Sendable {
         }
     }
 
+    func updateEvent(_ event: Event) async throws {
+        do {
+            try db.collection(collection).document(event.id).setData(from: event, merge: true)
+        } catch {
+            throw EventoriasError.eventUpdateFailed(error.localizedDescription)
+        }
+    }
+
     func deleteEvent(_ eventId: String) async throws {
         do {
             try await db.collection(collection).document(eventId).delete()
