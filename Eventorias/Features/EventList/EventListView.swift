@@ -31,6 +31,9 @@ struct EventListView: View {
                         Button("Sign Out", role: .destructive, action: onSignOut)
                     }
                     ToolbarItem(placement: .primaryAction) {
+                        categoryFilterMenu
+                    }
+                    ToolbarItem(placement: .primaryAction) {
                         Button("New Event", systemImage: "plus") {
                             showCreateEvent = true
                         }
@@ -73,14 +76,38 @@ struct EventListView: View {
             } description: {
                 Text("Tap + to create your first event")
             }
+        } else if viewModel.filteredEvents.isEmpty {
+            ContentUnavailableView {
+                Label("No matching events", systemImage: "line.3.horizontal.decrease.circle")
+            } description: {
+                Text("Try clearing the category filter")
+            } actions: {
+                Button("Clear filter") { viewModel.clearFilter() }
+                    .buttonStyle(.borderedProminent)
+            }
         } else {
-            List(viewModel.events) { event in
+            List(viewModel.filteredEvents) { event in
                 NavigationLink(value: event) {
                     EventRow(event: event)
                 }
             }
             .listStyle(.plain)
         }
+    }
+
+    private var categoryFilterMenu: some View {
+        Menu {
+            Button("All categories") { viewModel.clearFilter() }
+            Divider()
+            ForEach(EventCategory.allCases, id: \.self) { category in
+                Button(category.displayName) { viewModel.selectedCategory = category }
+            }
+        } label: {
+            Image(systemName: viewModel.hasActiveFilter
+                  ? "line.3.horizontal.decrease.circle.fill"
+                  : "line.3.horizontal.decrease.circle")
+        }
+        .accessibilityLabel("Filter by category")
     }
 
     private func reload() {

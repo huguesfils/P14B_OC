@@ -28,14 +28,19 @@ struct EventListViewModelTests {
 
     // MARK: - Helpers
 
-    private func makeEvent(id: String, daysFromNow: Double, title: String = "Event") -> Event {
+    private func makeEvent(
+        id: String,
+        daysFromNow: Double,
+        title: String = "Event",
+        category: EventCategory = .conference
+    ) -> Event {
         Event(
             id: id,
             title: title,
             description: "Description",
             date: Date().addingTimeInterval(86_400 * daysFromNow),
             location: "Paris",
-            category: .conference,
+            category: category,
             creatorId: "user-1",
             guests: []
         )
@@ -131,5 +136,58 @@ struct EventListViewModelTests {
         #expect(viewModel.events.isEmpty)
         #expect(viewModel.errorMessage == nil)
         #expect(viewModel.isLoading == false)
+        #expect(viewModel.selectedCategory == nil)
+        #expect(viewModel.hasActiveFilter == false)
+    }
+
+    // MARK: - Category filter
+
+    @Test("filteredEvents returns all events when no filter")
+    func filteredEventsNoFilter() async {
+        mockEventService.events = [
+            makeEvent(id: "1", daysFromNow: 1, category: .conference),
+            makeEvent(id: "2", daysFromNow: 2, category: .music)
+        ]
+        await viewModel.loadEvents()
+
+        #expect(viewModel.filteredEvents.count == 2)
+    }
+
+    @Test("filteredEvents narrows to selected category")
+    func filteredEventsByCategory() async {
+        mockEventService.events = [
+            makeEvent(id: "1", daysFromNow: 1, category: .conference),
+            makeEvent(id: "2", daysFromNow: 2, category: .music),
+            makeEvent(id: "3", daysFromNow: 3, category: .music)
+        ]
+        await viewModel.loadEvents()
+
+        viewModel.selectedCategory = .music
+
+        #expect(viewModel.filteredEvents.count == 2)
+        #expect(viewModel.filteredEvents.allSatisfy { $0.category == .music })
+        #expect(viewModel.hasActiveFilter)
+    }
+
+    @Test("filteredEvents returns empty when no event matches the filter")
+    func filteredEventsNoMatch() async {
+        mockEventService.events = [makeEvent(id: "1", daysFromNow: 1, category: .conference)]
+        await viewModel.loadEvents()
+
+        viewModel.selectedCategory = .sport
+
+        #expect(viewModel.filteredEvents.isEmpty)
+    }
+
+    @Test("clearFilter resets the selected category")
+    func clearFilterResets() async {
+        mockEventService.events = [makeEvent(id: "1", daysFromNow: 1, category: .music)]
+        await viewModel.loadEvents()
+        viewModel.selectedCategory = .music
+
+        viewModel.clearFilter()
+
+        #expect(viewModel.selectedCategory == nil)
+        #expect(viewModel.hasActiveFilter == false)
     }
 }
