@@ -24,11 +24,18 @@ final class EventDetailViewModel {
 
     private let eventService: EventServiceProtocol
     private let authService: AuthServiceProtocol
+    private let notificationService: NotificationServiceProtocol
 
-    init(event: Event, eventService: EventServiceProtocol, authService: AuthServiceProtocol) {
+    init(
+        event: Event,
+        eventService: EventServiceProtocol,
+        authService: AuthServiceProtocol,
+        notificationService: NotificationServiceProtocol
+    ) {
         self.event = event
         self.eventService = eventService
         self.authService = authService
+        self.notificationService = notificationService
         self.title = event.title
         self.description = event.description
         self.date = event.date
@@ -72,6 +79,8 @@ final class EventDetailViewModel {
 
         do {
             try await eventService.updateEvent(updated)
+            await notificationService.cancelReminder(forEventId: updated.id)
+            try? await notificationService.scheduleReminder(for: updated)
             event = updated
             isEditing = false
             isLoading = false
@@ -89,6 +98,7 @@ final class EventDetailViewModel {
 
         do {
             try await eventService.deleteEvent(event.id)
+            await notificationService.cancelReminder(forEventId: event.id)
             isLoading = false
             return true
         } catch {

@@ -17,6 +17,7 @@ struct EventCreationViewModelTests {
 
     let mockEventService: MockEventService
     let mockAuthService: MockAuthService
+    let mockNotificationService: MockNotificationService
     let viewModel: EventCreationViewModel
 
     // MARK: - Init
@@ -24,9 +25,15 @@ struct EventCreationViewModelTests {
     init() {
         let eventService = MockEventService()
         let authService = MockAuthService()
+        let notificationService = MockNotificationService()
         mockEventService = eventService
         mockAuthService = authService
-        viewModel = EventCreationViewModel(eventService: eventService, authService: authService)
+        mockNotificationService = notificationService
+        viewModel = EventCreationViewModel(
+            eventService: eventService,
+            authService: authService,
+            notificationService: notificationService
+        )
     }
 
     // MARK: - Helpers
@@ -54,6 +61,38 @@ struct EventCreationViewModelTests {
         #expect(mockEventService.events.first?.title == "Swift Meetup")
         #expect(mockEventService.events.first?.category == .conference)
         #expect(mockEventService.events.first?.creatorId == "test-user-id")
+    }
+
+    @Test("Create event schedules a notification reminder on success")
+    func createEventSchedulesReminder() async {
+        fillValidFields()
+
+        _ = await viewModel.createEvent()
+
+        let createdId = mockEventService.events.first?.id
+        #expect(createdId != nil)
+        #expect(mockNotificationService.scheduledEventIds.contains(createdId ?? ""))
+    }
+
+    @Test("Create event does not schedule reminder when service fails")
+    func createEventDoesNotScheduleOnError() async {
+        fillValidFields()
+        mockEventService.errorToThrow = EventoriasError.eventCreationFailed("oops")
+
+        _ = await viewModel.createEvent()
+
+        #expect(mockNotificationService.scheduledEventIds.isEmpty)
+    }
+
+    @Test("Create event still succeeds when notification scheduling fails")
+    func createEventTolerantToNotificationError() async {
+        fillValidFields()
+        mockNotificationService.errorToThrow = EventoriasError.unknown("notif denied")
+
+        let success = await viewModel.createEvent()
+
+        #expect(success)
+        #expect(mockEventService.events.count == 1)
     }
 
     @Test("Create event includes guests")
