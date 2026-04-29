@@ -36,6 +36,9 @@ struct EventListView: View {
                         }
                     }
                 }
+                .navigationDestination(for: Event.self) { event in
+                    EventDetailView(event: event, container: container)
+                }
                 .sheet(isPresented: $showCreateEvent, onDismiss: reload) {
                     EventCreationView(container: container)
                 }
@@ -72,7 +75,9 @@ struct EventListView: View {
             }
         } else {
             List(viewModel.events) { event in
-                EventRow(event: event)
+                NavigationLink(value: event) {
+                    EventRow(event: event)
+                }
             }
             .listStyle(.plain)
         }
