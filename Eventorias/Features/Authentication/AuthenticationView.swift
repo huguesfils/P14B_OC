@@ -29,6 +29,7 @@ struct AuthenticationView: View {
                 Text("Eventorias")
                     .font(.largeTitle)
                     .bold()
+                    .accessibilityAddTraits(.isHeader)
 
                 VStack(spacing: 16) {
                     TextField("Email", text: $viewModel.email)

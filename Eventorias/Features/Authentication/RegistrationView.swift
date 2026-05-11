@@ -25,6 +25,7 @@ struct RegistrationView: View {
                 Text("Create Account")
                     .font(.largeTitle)
                     .bold()
+                    .accessibilityAddTraits(.isHeader)
 
                 VStack(spacing: 16) {
                     TextField("Email", text: $viewModel.email)

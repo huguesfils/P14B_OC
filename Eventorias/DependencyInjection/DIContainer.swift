@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UserNotifications
 
 struct DIContainer {
     let authService: AuthServiceProtocol
@@ -15,6 +16,6 @@ struct DIContainer {
     init() {
         self.authService = AuthService()
         self.eventService = EventService()
-        self.notificationService = LocalNotificationService()
+        self.notificationService = LocalNotificationService(center: UNUserNotificationCenter.current())
     }
 }

@@ -148,6 +148,7 @@ struct EventDetailView: View {
                     subject: Text(viewModel.event.title),
                     message: Text("Join me at this event")
                 )
+                .accessibilityLabel("Share event")
             }
             if viewModel.canEdit {
                 ToolbarItem(placement: .primaryAction) {
@@ -161,6 +162,7 @@ struct EventDetailView: View {
                     } label: {
                         Image(systemName: "ellipsis.circle")
                     }
+                    .accessibilityLabel("More actions")
                 }
             }
         }

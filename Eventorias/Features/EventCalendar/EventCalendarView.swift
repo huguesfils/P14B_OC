@@ -61,6 +61,11 @@ struct EventCalendarView: View {
         }
     }
 
+    private func accessibilityDescription(for event: Event) -> String {
+        let time = event.date.formatted(date: .omitted, time: .shortened)
+        return "\(event.title), \(time), \(event.location)"
+    }
+
     @ViewBuilder
     private var dayEventsList: some View {
         let dayEvents = viewModel.eventsForSelectedDate
@@ -83,6 +88,8 @@ struct EventCalendarView: View {
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel(accessibilityDescription(for: event))
                 }
             }
             .listStyle(.plain)
