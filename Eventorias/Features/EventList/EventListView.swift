@@ -133,6 +133,13 @@ private struct EventRow: View {
                 .foregroundStyle(.secondary)
         }
         .padding(.vertical, 4)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(accessibilityDescription)
+    }
+
+    private var accessibilityDescription: String {
+        let date = event.date.formatted(date: .long, time: .shortened)
+        return "\(event.title), \(event.category.displayName), \(date), \(event.location)"
     }
 }
 

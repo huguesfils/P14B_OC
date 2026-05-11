@@ -21,19 +21,11 @@
 			remoteGlobalIDString = F35D46C42F5F4ED800C24471;
 			remoteInfo = Eventorias;
 		};
-		F35D46DF2F5F4ED900C24471 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F35D46BD2F5F4ED800C24471 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = F35D46C42F5F4ED800C24471;
-			remoteInfo = Eventorias;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		F35D46C52F5F4ED800C24471 /* Eventorias.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Eventorias.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F35D46D42F5F4ED900C24471 /* EventoriasTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EventoriasTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		F35D46DE2F5F4ED900C24471 /* EventoriasUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EventoriasUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -68,13 +60,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		F35D46DB2F5F4ED900C24471 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -92,7 +77,6 @@
 			children = (
 				F35D46C52F5F4ED800C24471 /* Eventorias.app */,
 				F35D46D42F5F4ED900C24471 /* EventoriasTests.xctest */,
-				F35D46DE2F5F4ED900C24471 /* EventoriasUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -149,26 +133,6 @@
 			productReference = F35D46D42F5F4ED900C24471 /* EventoriasTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		F35D46DD2F5F4ED900C24471 /* EventoriasUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = F35D46EE2F5F4ED900C24471 /* Build configuration list for PBXNativeTarget "EventoriasUITests" */;
-			buildPhases = (
-				F35D46DA2F5F4ED900C24471 /* Sources */,
-				F35D46DB2F5F4ED900C24471 /* Frameworks */,
-				F35D46DC2F5F4ED900C24471 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				F35D46E02F5F4ED900C24471 /* PBXTargetDependency */,
-			);
-			name = EventoriasUITests;
-			packageProductDependencies = (
-			);
-			productName = EventoriasUITests;
-			productReference = F35D46DE2F5F4ED900C24471 /* EventoriasUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -183,10 +147,6 @@
 						CreatedOnToolsVersion = 26.3;
 					};
 					F35D46D32F5F4ED900C24471 = {
-						CreatedOnToolsVersion = 26.3;
-						TestTargetID = F35D46C42F5F4ED800C24471;
-					};
-					F35D46DD2F5F4ED900C24471 = {
 						CreatedOnToolsVersion = 26.3;
 						TestTargetID = F35D46C42F5F4ED800C24471;
 					};
@@ -211,7 +171,6 @@
 			targets = (
 				F35D46C42F5F4ED800C24471 /* Eventorias */,
 				F35D46D32F5F4ED900C24471 /* EventoriasTests */,
-				F35D46DD2F5F4ED900C24471 /* EventoriasUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -225,13 +184,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		F35D46D22F5F4ED900C24471 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		F35D46DC2F5F4ED900C24471 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -255,13 +207,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		F35D46DA2F5F4ED900C24471 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -269,11 +214,6 @@
 			isa = PBXTargetDependency;
 			target = F35D46C42F5F4ED800C24471 /* Eventorias */;
 			targetProxy = F35D46D52F5F4ED900C24471 /* PBXContainerItemProxy */;
-		};
-		F35D46E02F5F4ED900C24471 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = F35D46C42F5F4ED800C24471 /* Eventorias */;
-			targetProxy = F35D46DF2F5F4ED900C24471 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -507,46 +447,6 @@
 			};
 			name = Release;
 		};
-		F35D46EF2F5F4ED900C24471 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = RT62BPUMZ6;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = huguesfils.Eventorias.EventoriasUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				STRING_CATALOG_GENERATE_SYMBOLS = NO;
-				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = Eventorias;
-			};
-			name = Debug;
-		};
-		F35D46F02F5F4ED900C24471 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = RT62BPUMZ6;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = huguesfils.Eventorias.EventoriasUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				STRING_CATALOG_GENERATE_SYMBOLS = NO;
-				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = Eventorias;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -573,15 +473,6 @@
 			buildConfigurations = (
 				F35D46EC2F5F4ED900C24471 /* Debug */,
 				F35D46ED2F5F4ED900C24471 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		F35D46EE2F5F4ED900C24471 /* Build configuration list for PBXNativeTarget "EventoriasUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				F35D46EF2F5F4ED900C24471 /* Debug */,
-				F35D46F02F5F4ED900C24471 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

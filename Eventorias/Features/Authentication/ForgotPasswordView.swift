@@ -28,6 +28,7 @@ struct ForgotPasswordView: View {
                 Text("Reset Password")
                     .font(.largeTitle)
                     .bold()
+                    .accessibilityAddTraits(.isHeader)
 
                 Text("Enter your email and we'll send you a link to reset your password.")
                     .font(.subheadline)

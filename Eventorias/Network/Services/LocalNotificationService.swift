@@ -9,17 +9,16 @@ import Foundation
 import UserNotifications
 
 final class LocalNotificationService: NotificationServiceProtocol, @unchecked Sendable {
-    private let center: UNUserNotificationCenter
+    private let center: UserNotificationCenterProtocol
     private let reminderLeadTime: TimeInterval
 
-    init(center: UNUserNotificationCenter = .current(), reminderLeadTime: TimeInterval = 3600) {
+    init(center: UserNotificationCenterProtocol, reminderLeadTime: TimeInterval = 3600) {
         self.center = center
         self.reminderLeadTime = reminderLeadTime
     }
 
     func currentAuthorizationStatus() async -> NotificationAuthorizationStatus {
-        let settings = await center.notificationSettings()
-        return Self.map(settings.authorizationStatus)
+        Self.map(await center.authorizationStatus())
     }
 
     func requestAuthorization() async throws -> Bool {

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UserNotifications
 
 enum NotificationAuthorizationStatus: Sendable {
     case notDetermined
@@ -20,4 +21,17 @@ protocol NotificationServiceProtocol: Sendable {
     func requestAuthorization() async throws -> Bool
     func scheduleReminder(for event: Event) async throws
     func cancelReminder(forEventId eventId: String) async
+}
+
+protocol UserNotificationCenterProtocol: Sendable {
+    func authorizationStatus() async -> UNAuthorizationStatus
+    func requestAuthorization(options: UNAuthorizationOptions) async throws -> Bool
+    func add(_ request: UNNotificationRequest) async throws
+    func removePendingNotificationRequests(withIdentifiers identifiers: [String])
+}
+
+extension UNUserNotificationCenter: UserNotificationCenterProtocol {
+    func authorizationStatus() async -> UNAuthorizationStatus {
+        await notificationSettings().authorizationStatus
+    }
 }
