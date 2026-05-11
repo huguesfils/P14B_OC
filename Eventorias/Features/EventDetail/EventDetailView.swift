@@ -36,13 +36,17 @@ struct EventDetailView: View {
                     Text(errorMessage)
                         .foregroundStyle(.red)
                 }
+                .listRowBackground(Color.evenGray)
             }
         }
+        .scrollContentBackground(.hidden)
+        .background(Color.evenBlack)
         .navigationTitle(viewModel.isEditing ? "Edit Event" : viewModel.event.title)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             toolbarContent
         }
+        .tint(Color.evenRed)
         .confirmationDialog(
             "Delete this event?",
             isPresented: $showDeleteConfirmation,
@@ -70,6 +74,7 @@ struct EventDetailView: View {
             LabeledContent("Location", value: viewModel.event.location)
             LabeledContent("Category", value: viewModel.event.category.displayName)
         }
+        .listRowBackground(Color.evenGray)
 
         if !viewModel.event.guests.isEmpty {
             Section("Guests") {
@@ -77,6 +82,7 @@ struct EventDetailView: View {
                     Text(guest)
                 }
             }
+            .listRowBackground(Color.evenGray)
         }
     }
 
@@ -99,6 +105,7 @@ struct EventDetailView: View {
                 }
             }
         }
+        .listRowBackground(Color.evenGray)
 
         Section("Guests") {
             HStack {
@@ -125,6 +132,7 @@ struct EventDetailView: View {
                 }
             }
         }
+        .listRowBackground(Color.evenGray)
     }
 
     @ToolbarContentBuilder

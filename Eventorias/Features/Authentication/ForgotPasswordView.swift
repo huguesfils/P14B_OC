@@ -28,11 +28,12 @@ struct ForgotPasswordView: View {
                 Text("Reset Password")
                     .font(.largeTitle)
                     .bold()
+                    .foregroundStyle(.white)
                     .accessibilityAddTraits(.isHeader)
 
                 Text("Enter your email and we'll send you a link to reset your password.")
                     .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(.white.opacity(0.7))
                     .multilineTextAlignment(.center)
 
                 TextField("Email", text: $email)
@@ -41,8 +42,9 @@ struct ForgotPasswordView: View {
                     .autocorrectionDisabled()
                     .textInputAutocapitalization(.never)
                     .padding()
-                    .background(.quaternary)
+                    .background(Color.evenGray)
                     .clipShape(.rect(cornerRadius: 10))
+                    .foregroundStyle(.white)
 
                 if let errorMessage {
                     Text(errorMessage)
@@ -63,12 +65,14 @@ struct ForgotPasswordView: View {
                         await sendReset()
                     }
                 }
-                .buttonStyle(.borderedProminent)
+                .buttonStyle(.eventoriasPrimary)
                 .disabled(isLoading || email.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
 
                 Spacer()
             }
             .padding()
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color.evenBlack)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Close") {
@@ -77,6 +81,7 @@ struct ForgotPasswordView: View {
                 }
             }
         }
+        .tint(Color.evenGray)
     }
 
     private func sendReset() async {

@@ -32,6 +32,7 @@ struct EventListViewModelTests {
         id: String,
         daysFromNow: Double,
         title: String = "Event",
+        location: String = "Paris",
         category: EventCategory = .conference
     ) -> Event {
         Event(
@@ -39,7 +40,7 @@ struct EventListViewModelTests {
             title: title,
             description: "Description",
             date: Date().addingTimeInterval(86_400 * daysFromNow),
-            location: "Paris",
+            location: location,
             category: category,
             creatorId: "user-1",
             guests: []
@@ -189,5 +190,101 @@ struct EventListViewModelTests {
 
         #expect(viewModel.selectedCategory == nil)
         #expect(viewModel.hasActiveFilter == false)
+    }
+
+    // MARK: - Search
+
+    @Test("Initial searchText is empty and hasActiveSearch is false")
+    func initialSearchState() {
+        #expect(viewModel.searchText == "")
+        #expect(viewModel.hasActiveSearch == false)
+    }
+
+    @Test("Empty or whitespace-only search returns all events")
+    func searchIgnoresEmptyAndWhitespace() async {
+        mockEventService.events = [
+            makeEvent(id: "1", daysFromNow: 1, title: "WWDC"),
+            makeEvent(id: "2", daysFromNow: 2, title: "Dub Dub")
+        ]
+        await viewModel.loadEvents()
+
+        viewModel.searchText = ""
+        #expect(viewModel.filteredEvents.count == 2)
+        #expect(viewModel.hasActiveSearch == false)
+
+        viewModel.searchText = "   "
+        #expect(viewModel.filteredEvents.count == 2)
+        #expect(viewModel.hasActiveSearch == false)
+    }
+
+    @Test("Search filters by title case-insensitively")
+    func searchByTitle() async {
+        mockEventService.events = [
+            makeEvent(id: "1", daysFromNow: 1, title: "Swift Meetup"),
+            makeEvent(id: "2", daysFromNow: 2, title: "Music Festival")
+        ]
+        await viewModel.loadEvents()
+
+        viewModel.searchText = "swift"
+
+        #expect(viewModel.filteredEvents.count == 1)
+        #expect(viewModel.filteredEvents.first?.id == "1")
+        #expect(viewModel.hasActiveSearch)
+    }
+
+    @Test("Search filters by location case-insensitively")
+    func searchByLocation() async {
+        mockEventService.events = [
+            makeEvent(id: "1", daysFromNow: 1, title: "Talk", location: "Paris"),
+            makeEvent(id: "2", daysFromNow: 2, title: "Talk", location: "Cupertino")
+        ]
+        await viewModel.loadEvents()
+
+        viewModel.searchText = "PARIS"
+
+        #expect(viewModel.filteredEvents.count == 1)
+        #expect(viewModel.filteredEvents.first?.id == "1")
+    }
+
+    @Test("Search trims whitespace around the needle")
+    func searchTrimsWhitespace() async {
+        mockEventService.events = [
+            makeEvent(id: "1", daysFromNow: 1, title: "WWDC"),
+            makeEvent(id: "2", daysFromNow: 2, title: "Other")
+        ]
+        await viewModel.loadEvents()
+
+        viewModel.searchText = "  WWDC  "
+
+        #expect(viewModel.filteredEvents.count == 1)
+        #expect(viewModel.filteredEvents.first?.id == "1")
+    }
+
+    @Test("Search combined with category filter applies both filters")
+    func searchCombinedWithCategoryFilter() async {
+        mockEventService.events = [
+            makeEvent(id: "1", daysFromNow: 1, title: "Swift Conf", category: .conference),
+            makeEvent(id: "2", daysFromNow: 2, title: "Swift Concert", category: .music),
+            makeEvent(id: "3", daysFromNow: 3, title: "Other Concert", category: .music)
+        ]
+        await viewModel.loadEvents()
+
+        viewModel.searchText = "swift"
+        viewModel.selectedCategory = .music
+
+        #expect(viewModel.filteredEvents.count == 1)
+        #expect(viewModel.filteredEvents.first?.id == "2")
+    }
+
+    @Test("clearSearch resets searchText and disables hasActiveSearch")
+    func clearSearchResets() async {
+        mockEventService.events = [makeEvent(id: "1", daysFromNow: 1)]
+        await viewModel.loadEvents()
+        viewModel.searchText = "anything"
+
+        viewModel.clearSearch()
+
+        #expect(viewModel.searchText == "")
+        #expect(viewModel.hasActiveSearch == false)
     }
 }

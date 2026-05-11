@@ -37,6 +37,7 @@ struct ContentView: View {
         .onAppear {
             isAuthenticated = container.authService.currentUserId != nil
         }
+        .preferredColorScheme(.dark)
     }
 
     private func endSession() {

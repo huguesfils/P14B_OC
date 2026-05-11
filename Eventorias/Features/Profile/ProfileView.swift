@@ -66,6 +66,8 @@ struct ProfileView: View {
                     }
                 }
             }
+            .scrollContentBackground(.hidden)
+            .background(Color.evenBlack)
             .navigationTitle("Profile")
             .task {
                 await viewModel.refreshNotificationStatus()

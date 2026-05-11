@@ -29,6 +29,7 @@ struct AuthenticationView: View {
                 Text("Eventorias")
                     .font(.largeTitle)
                     .bold()
+                    .foregroundStyle(.white)
                     .accessibilityAddTraits(.isHeader)
 
                 VStack(spacing: 16) {
@@ -38,14 +39,16 @@ struct AuthenticationView: View {
                         .autocorrectionDisabled()
                         .textInputAutocapitalization(.never)
                         .padding()
-                        .background(.quaternary)
+                        .background(Color.evenGray)
                         .clipShape(.rect(cornerRadius: 10))
+                        .foregroundStyle(.white)
 
                     SecureField("Password", text: $viewModel.password)
                         .textContentType(.password)
                         .padding()
-                        .background(.quaternary)
+                        .background(Color.evenGray)
                         .clipShape(.rect(cornerRadius: 10))
+                        .foregroundStyle(.white)
                 }
 
                 if let errorMessage = viewModel.errorMessage {
@@ -63,13 +66,14 @@ struct AuthenticationView: View {
                         }
                     }
                 }
-                .buttonStyle(.borderedProminent)
+                .buttonStyle(.eventoriasPrimary)
                 .disabled(viewModel.isLoading)
 
                 Button("Forgot password?") {
                     showForgotPassword = true
                 }
                 .font(.footnote)
+                .foregroundStyle(Color.evenGray)
 
                 Spacer()
 
@@ -77,8 +81,11 @@ struct AuthenticationView: View {
                     showRegistration = true
                 }
                 .font(.footnote)
+                .foregroundStyle(Color.evenGray)
             }
             .padding()
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color.evenBlack)
             .sheet(isPresented: $showRegistration) {
                 RegistrationView(container: container, isAuthenticated: $isAuthenticated)
             }
@@ -86,6 +93,7 @@ struct AuthenticationView: View {
                 ForgotPasswordView(authService: container.authService)
             }
         }
+        .tint(Color.evenGray)
     }
 }
 

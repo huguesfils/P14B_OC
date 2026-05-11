@@ -25,6 +25,7 @@ struct RegistrationView: View {
                 Text("Create Account")
                     .font(.largeTitle)
                     .bold()
+                    .foregroundStyle(.white)
                     .accessibilityAddTraits(.isHeader)
 
                 VStack(spacing: 16) {
@@ -34,20 +35,23 @@ struct RegistrationView: View {
                         .autocorrectionDisabled()
                         .textInputAutocapitalization(.never)
                         .padding()
-                        .background(.quaternary)
+                        .background(Color.evenGray)
                         .clipShape(.rect(cornerRadius: 10))
+                        .foregroundStyle(.white)
 
                     SecureField("Password", text: $viewModel.password)
                         .textContentType(.newPassword)
                         .padding()
-                        .background(.quaternary)
+                        .background(Color.evenGray)
                         .clipShape(.rect(cornerRadius: 10))
+                        .foregroundStyle(.white)
 
                     SecureField("Confirm Password", text: $viewModel.confirmPassword)
                         .textContentType(.newPassword)
                         .padding()
-                        .background(.quaternary)
+                        .background(Color.evenGray)
                         .clipShape(.rect(cornerRadius: 10))
+                        .foregroundStyle(.white)
                 }
 
                 if let errorMessage = viewModel.errorMessage {
@@ -66,12 +70,14 @@ struct RegistrationView: View {
                         }
                     }
                 }
-                .buttonStyle(.borderedProminent)
+                .buttonStyle(.eventoriasPrimary)
                 .disabled(viewModel.isLoading)
 
                 Spacer()
             }
             .padding()
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color.evenBlack)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
@@ -80,6 +86,7 @@ struct RegistrationView: View {
                 }
             }
         }
+        .tint(Color.evenGray)
     }
 }
 

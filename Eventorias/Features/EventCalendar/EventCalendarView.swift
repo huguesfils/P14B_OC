@@ -29,11 +29,14 @@ struct EventCalendarView: View {
                 )
                 .datePickerStyle(.graphical)
                 .padding(.horizontal)
+                .tint(Color.evenRed)
 
                 Divider()
 
                 dayEventsList
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color.evenBlack)
             .navigationTitle("Calendar")
             .navigationDestination(for: Event.self) { event in
                 EventDetailView(event: event, container: container)
@@ -54,11 +57,13 @@ struct EventCalendarView: View {
                         Button("Retry") {
                             Task { await viewModel.loadEvents() }
                         }
-                        .buttonStyle(.borderedProminent)
+                        .buttonStyle(.eventoriasPrimary)
+                        .padding(.horizontal)
                     }
                 }
             }
         }
+        .tint(Color.evenRed)
     }
 
     private func accessibilityDescription(for event: Event) -> String {
@@ -81,18 +86,21 @@ struct EventCalendarView: View {
                     VStack(alignment: .leading, spacing: 4) {
                         Text(event.title)
                             .font(.headline)
+                            .foregroundStyle(.white)
                         Text(event.date, format: .dateTime.hour().minute())
                             .font(.subheadline)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(.white.opacity(0.7))
                         Text(event.location)
                             .font(.caption)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(.white.opacity(0.7))
                     }
                     .accessibilityElement(children: .combine)
                     .accessibilityLabel(accessibilityDescription(for: event))
                 }
+                .listRowBackground(Color.evenGray)
             }
             .listStyle(.plain)
+            .scrollContentBackground(.hidden)
         }
     }
 }

@@ -13,6 +13,7 @@ final class EventListViewModel {
     var errorMessage: String?
     var isLoading = false
     var selectedCategory: EventCategory?
+    var searchText: String = ""
 
     private let eventService: EventServiceProtocol
 
@@ -21,12 +22,27 @@ final class EventListViewModel {
     }
 
     var filteredEvents: [Event] {
-        guard let selectedCategory else { return events }
-        return events.filter { $0.category == selectedCategory }
+        var result = events
+        if let selectedCategory {
+            result = result.filter { $0.category == selectedCategory }
+        }
+        let trimmed = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+        if !trimmed.isEmpty {
+            let needle = trimmed.lowercased()
+            result = result.filter {
+                $0.title.lowercased().contains(needle) ||
+                $0.location.lowercased().contains(needle)
+            }
+        }
+        return result
     }
 
     var hasActiveFilter: Bool {
         selectedCategory != nil
+    }
+
+    var hasActiveSearch: Bool {
+        !searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 
     func loadEvents() async {
@@ -45,5 +61,9 @@ final class EventListViewModel {
 
     func clearFilter() {
         selectedCategory = nil
+    }
+
+    func clearSearch() {
+        searchText = ""
     }
 }

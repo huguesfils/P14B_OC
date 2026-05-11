@@ -23,7 +23,10 @@ struct EventListView: View {
     var body: some View {
         NavigationStack {
             content
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(Color.evenBlack)
                 .navigationTitle("Events")
+                .searchable(text: $viewModel.searchText, prompt: "Search by title or location")
                 .toolbar {
                     ToolbarItem(placement: .primaryAction) {
                         categoryFilterMenu
@@ -47,6 +50,7 @@ struct EventListView: View {
                     await viewModel.loadEvents()
                 }
         }
+        .tint(Color.evenRed)
     }
 
     @ViewBuilder
@@ -63,7 +67,8 @@ struct EventListView: View {
                 Button("Retry") {
                     Task { await viewModel.loadEvents() }
                 }
-                .buttonStyle(.borderedProminent)
+                .buttonStyle(.eventoriasPrimary)
+                .padding(.horizontal)
             }
         } else if viewModel.events.isEmpty {
             ContentUnavailableView {
@@ -73,20 +78,36 @@ struct EventListView: View {
             }
         } else if viewModel.filteredEvents.isEmpty {
             ContentUnavailableView {
-                Label("No matching events", systemImage: "line.3.horizontal.decrease.circle")
+                Label("No matching events", systemImage: "magnifyingglass")
             } description: {
-                Text("Try clearing the category filter")
+                Text(noMatchDescription)
             } actions: {
-                Button("Clear filter") { viewModel.clearFilter() }
-                    .buttonStyle(.borderedProminent)
+                Button("Clear filters") {
+                    viewModel.clearFilter()
+                    viewModel.clearSearch()
+                }
+                .buttonStyle(.eventoriasPrimary)
+                .padding(.horizontal)
             }
         } else {
             List(viewModel.filteredEvents) { event in
                 NavigationLink(value: event) {
                     EventRow(event: event)
                 }
+                .listRowBackground(Color.evenGray)
             }
             .listStyle(.plain)
+            .scrollContentBackground(.hidden)
+            .animation(.default, value: viewModel.filteredEvents)
+        }
+    }
+
+    private var noMatchDescription: String {
+        switch (viewModel.hasActiveSearch, viewModel.hasActiveFilter) {
+        case (true, true): "No event matches your search and selected category."
+        case (true, false): "No event matches your search."
+        case (false, true): "No event in the selected category."
+        case (false, false): "No matching events."
         }
     }
 
@@ -118,19 +139,21 @@ private struct EventRow: View {
             HStack {
                 Text(event.title)
                     .font(.headline)
+                    .foregroundStyle(.white)
                 Spacer()
                 Text(event.category.displayName)
                     .font(.caption)
+                    .foregroundStyle(.white)
                     .padding(.horizontal, 8)
                     .padding(.vertical, 4)
-                    .background(.secondary.opacity(0.15), in: .capsule)
+                    .background(.white.opacity(0.15), in: .capsule)
             }
             Text(event.date, format: .dateTime.day().month().year().hour().minute())
                 .font(.subheadline)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(.white.opacity(0.7))
             Text(event.location)
                 .font(.subheadline)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(.white.opacity(0.7))
         }
         .padding(.vertical, 4)
         .accessibilityElement(children: .combine)

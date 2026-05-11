@@ -41,6 +41,7 @@ struct EventCreationView: View {
                         }
                     }
                 }
+                .listRowBackground(Color.evenGray)
 
                 Section("Guests") {
                     HStack {
@@ -67,14 +68,18 @@ struct EventCreationView: View {
                         }
                     }
                 }
+                .listRowBackground(Color.evenGray)
 
                 if let errorMessage = viewModel.errorMessage {
                     Section {
                         Text(errorMessage)
                             .foregroundStyle(.red)
                     }
+                    .listRowBackground(Color.evenGray)
                 }
             }
+            .scrollContentBackground(.hidden)
+            .background(Color.evenBlack)
             .navigationTitle("New Event")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -95,6 +100,7 @@ struct EventCreationView: View {
                 }
             }
         }
+        .tint(Color.evenRed)
     }
 }
 
